@@ -27,20 +27,23 @@ router.get('/products', async (req, res)=>{
     })
 })
 
-router.get('/products/:id', async (req, res)=>{
-    const id = req.params.id;
-    const result = ProductsModel.find({_id:id})
+// cuando paso de pag, el limit se borra, queda sólo page
+
+router.get('/products/:pid', async (req, res)=>{
+    const {pid} = req.params;
+    const result = ProductsModel.findOne({_id:pid})
     console.log(result)
-    res.render('products', {
-        products:{
+    res.render('singleProduct', {
+        product:{
                 title: result.title,
                 price: result.price,
                 thumbnail: result.thumbnail,
-            }, 
-        hasPrevPage: result.hasPrevPage,
-        hasNextPage: result.hasNextPage,
-        page: result.page
+            },
     })
 })
+// Me muestra solo una imagen mal ruteada cuando le pego a este endpoint, pero no me tira ningún error
+
+
+
 
 module.exports = router;
