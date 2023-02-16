@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const ProductsModel = require('../models/products.model');
+const productsRouter = require('./products.router');
 
 const router = Router();
 
@@ -8,15 +9,37 @@ router.get('/', (req, res)=>{
 })
 
 router.get('/products', async (req, res)=>{
-    const products = await ProductsModel.find()
+    const limit = req.query.limit || 10;
+    const page = req.query.page || 1;
+    const result = await ProductsModel.paginate({}, {page, limit})
+    console.log(result)
     res.render('products', {
-        products:products.map((product)=>{
+        products:result.docs.map((product)=>{
             return {
                 title: product.title,
                 price: product.price,
-                thumbnail: product.thumbnail
+                thumbnail: product.thumbnail,
             }
-        })
+        }),
+        hasPrevPage: result.hasPrevPage,
+        hasNextPage: result.hasNextPage,
+        page: result.page
+    })
+})
+
+router.get('/products/:id', async (req, res)=>{
+    const id = req.params.id;
+    const result = ProductsModel.find({_id:id})
+    console.log(result)
+    res.render('products', {
+        products:{
+                title: result.title,
+                price: result.price,
+                thumbnail: result.thumbnail,
+            }, 
+        hasPrevPage: result.hasPrevPage,
+        hasNextPage: result.hasNextPage,
+        page: result.page
     })
 })
 

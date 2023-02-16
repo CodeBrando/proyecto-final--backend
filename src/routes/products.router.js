@@ -6,26 +6,35 @@ const multerUtils = require('../utils/multer.utils');
 const productsRouter = Router();
 
 productsRouter.get('/', async (req, res)=>{
-    const limit = req.query.limit;
     try {
-        if(!limit){
-            const products = await ProductsModel.find()
-            return res.json({
-            msg: 'ok',
+        const products = await ProductsModel.find()
+        return res.json({
+            status: 'success',
             payload: products
         })
-        } else {
-            const products = (await ProductsModel.find()).slice(0, limit)
-            return res.json({
-            msg: 'ok',
-            payload: products
+    }
+    catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            status: 'error',
+            payload: 'Error al obtener los productos.'
         })
-        }
+    }
+})
+
+productsRouter.get('/:id', async (req, res)=>{
+    const id = req.params.id;
+    try {
+        const productById = await ProductsModel.find({_id:id})
+        return res.json({
+            status: 'success',
+            payload: productById
+        })
     } catch (error) {
         console.log(error);
         return res.status(500).json({
-            msg: 'error',
-            payload: 'Error al obtener los productos.'
+            status: 'error',
+            payload: `Error al obtener producto con id ${id}.`
         })
     }
 })

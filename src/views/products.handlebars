@@ -9,4 +9,22 @@
             </li>
         {{/each}}
     </ul>
+    <div style="display:flex;">
+        {{#if hasPrevPage }}
+        <button id="prev">prev</button>
+        {{else}}
+        <button id="prev" disabled>prev</button>
+        {{/if}}
+
+        <p id="page">{{page}}</p>
+
+        {{#if hasNextPage }}
+        <button id="next">sig</button>
+        {{else}}
+        <button id="next" disabled>sig</button>
+        {{/if}}
+
+    </div>
 </div>
+
+<script src="/index.js"></script>
