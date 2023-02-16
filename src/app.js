@@ -2,7 +2,9 @@ const express = require('express');
 const handlebars = require('express-handlebars');
 const mongoose = require('mongoose');
 const productsRouter = require('./routes/products.router');
+const cartsRouter = require('./routes/carts.router')
 const viewsRouter = require('./routes/views.router');
+
 
 const app = express();
 const PORT = 8080;
@@ -16,6 +18,7 @@ app.use(express.json());
 app.use(express.static(__dirname + '/public'));
 app.use(express.urlencoded({extended:true}));
 app.use('/api/products', productsRouter);
+app.use('/api/carts', cartsRouter)
 app.use('/', viewsRouter);
 
 app.listen(PORT, ()=>{

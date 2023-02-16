@@ -31,7 +31,7 @@ router.get('/products', async (req, res)=>{
 
 router.get('/products/:pid', async (req, res)=>{
     const {pid} = req.params;
-    const result = ProductsModel.findOne({_id:pid})
+    const result = ProductsModel.findById({_id:pid})
     console.log(result)
     res.render('singleProduct', {
         product:{
